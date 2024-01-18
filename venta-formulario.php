@@ -152,4 +152,22 @@ include_once "header.php";
         </div>
     </div>
 
+    <script>
+        function fBuscarPrecio() {
+            let idProducto = $("#lstProducto option:selected").val();
+            $.ajax({
+                type: "GET",
+                url: "venta-formulario.php?do=buscarProducto",
+                data: {
+                    id: idProducto
+                },
+                async: true,
+                dataType: "json",
+                success: function(respuesta) {
+
+                }
+            });
+        }
+        // {"precio":"268.62","cantidad":"100"}
+    </script>
     <?php include_once "footer.php"; ?>

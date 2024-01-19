@@ -130,14 +130,10 @@ include_once "header.php";
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
-            <label for="txtPrecioUni" class="mt-4">Precio unitario:</label>
-            <input type="text" class="form-control" name="txtPrecioUni" id="txtPrecioUni" placeholder="0" required>
-            <label for="txtTotal" class="mt-4">Total:</label>
-            <input type="text" class="form-control" name="txtTotal" id="txtTotal" placeholder="0" required>
         </div>
         <div class="col-6 form-group">
             <label for="lstProducto">Producto:</label>
-            <select class="form-control selectpicker" name="lstProducto" id="lstProducto" required>
+            <select class="form-control selectpicker" name="lstProducto" id="lstProducto" onchange="fBuscarPrecio();" required>
                 <option value="" disabled selected>Seleccionar</option>
                 <?php foreach ($aProductos as $producto) : ?>
                     <?php if ($producto->idProducto == $venta->fk_idproducto) : ?>
@@ -147,27 +143,37 @@ include_once "header.php";
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
+        </div>
+        <div class="col-6 form-group">
+            <label for="txtPrecioUni" class="mt-4">Precio unitario:</label>
+            <input type="text" class="form-control" name="txtPrecioUni" id="txtPrecioUni" placeholder="0" required>
+            <label for="txtTotal" class="mt-4">Total:</label>
+            <input type="text" class="form-control" name="txtTotal" id="txtTotal" placeholder="0" required>
+        </div>
+        <div class="col-6 form-group">
             <label for="txtCantidad" class="mt-4">Cantidad:</label>
             <input type="text" name="txtCantidad" id="txtCantidad" class="form-control" placeholder="0" required>
         </div>
     </div>
+</div>
 
-    <script>
-        function fBuscarPrecio() {
-            let idProducto = $("#lstProducto option:selected").val();
-            $.ajax({
-                type: "GET",
-                url: "venta-formulario.php?do=buscarProducto",
-                data: {
-                    id: idProducto
-                },
-                async: true,
-                dataType: "json",
-                success: function(respuesta) {
 
-                }
-            });
-        }
-        // {"precio":"268.62","cantidad":"100"}
-    </script>
-    <?php include_once "footer.php"; ?>
+<script>
+    function fBuscarPrecio() {
+        let idProducto = $("#lstProducto option:selected").val();
+        $.ajax({
+            type: "GET",
+            url: "venta-formulario.php?do=buscarProducto",
+            data: {
+                id: idProducto
+            },
+            async: true,
+            dataType: "json",
+            success: function(respuesta) {
+                $("#txtPrecioUni").val(respuesta.precio);
+            }
+        });
+    }
+    // {"precio":"268.62","cantidad":"100"}
+</script>
+<?php include_once "footer.php"; ?>

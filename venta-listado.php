@@ -17,9 +17,6 @@ foreach ($aVenta as $venta) {
     echo $venta;
 }
 
-exit;
-print_r($aVenta);
-
 $pg = "Listado de ventas";
 
 include_once "header.php";

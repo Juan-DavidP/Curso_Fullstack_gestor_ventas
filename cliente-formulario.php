@@ -29,13 +29,13 @@ if ($_POST) {
     } else if (isset($_POST["btnEliminar"])) {
         //Si existen ventas asociadas al cliente que se intenta eliminar, muestra mensaje de alerta
         $venta = new Venta();
-        // if ($venta->obtenerVentasPorCliente($cliente->idcliente)) {
-        //     $msg["texto"] = "No se puede eliminar un cliente con ventas asociadas.";
-        //     $msg["codigo"] = "alert-danger";
-        // } else {
-        //     $cliente->eliminar();
-        //     header("Location: cliente-listado.php");
-        // }
+        if ($venta->obtenerVentasPorCliente($cliente->idcliente)) {
+            $msg["texto"] = "No se puede eliminar un cliente con ventas asociadas.";
+            $msg["codigo"] = "alert-danger";
+        } else {
+            $cliente->eliminar();
+            header("Location: cliente-listado.php");
+        }
     }
 }
 
@@ -49,9 +49,9 @@ if (isset($_GET["do"]) && $_GET["do"] == "buscarLocalidad" && $_GET["id"] && $_G
 if (isset($_GET["id"]) && $_GET["id"] > 0) {
     $cliente->obtenerPorId();
 }
-
 $provincia = new Provincia();
 $aProvincias = $provincia->obtenerTodos();
+
 
 include_once "header.php";
 ?>
@@ -137,13 +137,13 @@ include_once "header.php";
                 <div class="row panel-body p-3">
                     <div class="col-6 form-group">
                         <label for="txtTelefono">Provincia:</label>
-                        <select class="form-control" name="lstProvincia" id="lstProvincia" onchange="fBuscarLocalidad()" required>
+                        <select class="form-control" name="lstProvincia" id="lstProvincia" onchange="fBuscarLocalidad();" required>
                             <option value="" disabled selected>Seleccionar</option>
                             <?php foreach ($aProvincias as $provincia) : ?>
-                                <?php if ($cliente->fk_idprovincia == $provincia->idprovincia) : ?>
-                                    <option value="<?php echo $provincia->idprovincia; ?>"><?php echo $provincia->nombre; ?></option>
+                                <?php if ($cliente->fk_idprovincia == $provincia->idProvincia) : ?>
+                                    <option value="<?php echo $provincia->idProvincia; ?>"><?php echo $provincia->nombre; ?></option>
                                 <?php else : ?>
-                                    <option value="<?php echo $provincia->idprovincia; ?>"><?php echo $provincia->nombre; ?></option>
+                                    <option value="<?php echo $provincia->idProvincia; ?>"><?php echo $provincia->nombre; ?></option>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </select>
@@ -169,11 +169,6 @@ include_once "header.php";
 </div>
 <!-- End of Main Content -->
 <script>
-    $(document).ready(function() {
-        var idCliente = '<?php echo isset($cliente) && $cliente->idcliente > 0 ? $cliente->idcliente : 0 ?>';
-
-    });
-
     function fBuscarLocalidad() {
         idProvincia = $("#lstProvincia option:selected").val();
         $.ajax({

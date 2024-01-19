@@ -12,6 +12,7 @@ class Cliente
     private $correo;
     private $fecha_nac;
     private $fk_idlocalidad;
+    private $fk_idprovincia;
     private $domicilio;
 
     public function __construct()
@@ -36,6 +37,7 @@ class Cliente
         $this->telefono = isset($request["txtTelefono"]) ? $request["txtTelefono"] : "";
         $this->correo = isset($request["txtCorreo"]) ? $request["txtCorreo"] : "";
         $this->fk_idlocalidad = isset($request["lstLocalidad"]) ? $request["lstLocalidad"] : "";
+        $this->fk_idprovincia = isset($request["lstProvincia"]) ? $request["lstProvincia"] : "";
         $this->domicilio = isset($request["txtDomicilio"]) ? $request["txtDomicilio"] : "";
         if (isset($request["txtAnioNac"]) && isset($request["txtMesNac"]) && isset($request["txtDiaNac"])) {
             $this->fecha_nac = $request["txtAnioNac"] . "-" . $request["txtMesNac"] . "-" . $request["txtDiaNac"];
@@ -54,6 +56,7 @@ class Cliente
                     correo,
                     fecha_nac,
                     fk_idlocalidad,
+                    fk_idprovincia,
                     domicilio
                 ) VALUES (
                     '$this->nombre',
@@ -62,6 +65,7 @@ class Cliente
                     '$this->correo',
                     '$this->fecha_nac',
                     $this->fk_idlocalidad,
+                    $this->fk_idprovincia,
                     '$this->domicilio'
                 );";
         // print_r($sql);
@@ -87,6 +91,7 @@ class Cliente
                 correo = '" . $this->correo . "',
                 fecha_nac =  '" . $this->fecha_nac . "',
                 fk_idlocalidad =  " . $this->fk_idlocalidad . ",
+                fk_idprovincia =  " . $this->fk_idprovincia . ",
                 domicilio =  '" . $this->domicilio . "'
                 WHERE idcliente = " . $this->idcliente;
 
@@ -124,6 +129,7 @@ class Cliente
             $this->correo = $fila["correo"];
             $this->fecha_nac = $fila["fecha_nac"];
             $this->fk_idlocalidad = $fila["fk_idlocalidad"];
+            $this->fk_idprovincia = $fila["fk_idprovincia"];
             $this->domicilio = $fila["domicilio"];
         }
         $mysqli->close();
@@ -155,6 +161,7 @@ class Cliente
                 $entidadAux->correo = $fila["correo"];
                 $entidadAux->fecha_nac = $fila["fecha_nac"];
                 $entidadAux->fk_idlocalidad = $fila["fk_idlocalidad"];
+                $entidadAux->fk_idprovincia = $fila["fk_idprovincia"];
                 $entidadAux->domicilio = $fila["domicilio"];
                 $aResultado[] = $entidadAux;
             }
